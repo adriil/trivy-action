@@ -88,10 +88,16 @@ inputs:
   trivy-config:
     description: 'path to trivy.yaml config'
     required: false
+  trivy-image:
+    description: 'path to trivy image in your own registry'
+    required: false
+    default: "Dockerfile"
 
 runs:
   using: 'docker'
   image: "Dockerfile"
+  env:
+    TRIVY_BASE_IMAGE: '${{ inputs.trivy-image }}'
   args:
     - '-a ${{ inputs.scan-type }}'
     - '-b ${{ inputs.format }}'
@@ -115,3 +121,4 @@ runs:
     - '-t ${{ inputs.trivyignores }}'
     - '-u ${{ inputs.github-pat }}'
     - '-v ${{ inputs.trivy-config }}'
+    - '-w ${{ inputs.trivy-image }}'
